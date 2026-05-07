@@ -37,8 +37,10 @@ Os arquivos já processados estão versionado no repositório, tornando esta eta
 python scripts/bacia_parana/main.py 
 ```
 
+Confira os requesitos e especificações para o arquivo de modelagem em 'data/example/modelo_poco.csv'.
+
 ### Modelagem
-Com o arquivo 'data/processed/20260503_pocos_parana.csv' temos todas as informações para modelar a bacia no Blender usando a aba "Scripting" do programa, basta carregar o script de modelagem em `./scripts/blender_model.py` e ajustar o caminho do dataset.
+Com o arquivo 'data/processed/20260503_pocos_parana.csv' temos todas as informações para modelar a bacia no Blender usando a aba "Scripting" do programa, basta carregar o script de modelagem em `./scripts/blender_model.py` e ajustar o caminho do modelo.
 
 ### Educação
 PARA FAZER: preciso consultar o Dr. Celso para entender melhor essa parte.
