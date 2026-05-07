@@ -1,107 +1,132 @@
 import bpy
-import bmesh
 import csv
 import numpy as np
 from scipy.interpolate import Rbf
 
-def processar_modelo_geologico(caminho_csv):
-    formacoes = {}
-    pocos = {}
-    min_x = float('inf')
-    min_y = float('inf')
+"""
+Este script gera uma superfície com interpolação e cria objetos de curva para cada poço no Blender. O resultado é uma coleção organizada de objetos representando a superfície e os poços, facilitando a visualização geológica. O script é flexível e pode ser adaptado para diferentes conjuntos de dados, desde que sigam as especificações técnicas do CSV de exemplo 'data/example/modelo_poco.csv'.
+"""
 
-    with open(caminho_csv, 'r', encoding='utf-8') as f:
-        leitor = csv.DictReader(f)
-        for linha in leitor:
-            x = float(linha['x_utm'])
-            y = float(linha['y_utm'])
-            z = float(linha['z_abs'])
-            formacao = linha['formation_name']
-            id_poco = linha['well_id']
 
-            if x < min_x: 
-                min_x = x
-            if y < min_y: 
-                min_y = y
+def processar_modelo_geologico(input_file, exagero_vertical=10.0):
+    pontos_brutos = {}
+    pocos = []
+    
+    with open(input_file, 'r', encoding='utf-8') as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            try:
+                x = float(row['X_UTM'])
+                y = float(row['Y_UTM'])
+                z = float(row['ELEVACAO'])
+            except ValueError:
+                continue
 
-            if formacao not in formacoes:
-                formacoes[formacao] = {'x': [], 'y': [], 'z': []}
-            formacoes[formacao]['x'].append(x)
-            formacoes[formacao]['y'].append(y)
-            formacoes[formacao]['z'].append(z)
+            id_poco = row['POCO']
+            prof_str = row.get('PROFUNDIDADE_VERTICAL_M', '').strip()
+            prof = float(prof_str) if prof_str else 500.0
+            if prof <= 0.0:
+                prof = 500.0
+            
+            pocos.append((x, y, z, id_poco, prof))
+            
+            coord_key = (x, y)
+            if coord_key not in pontos_brutos:
+                pontos_brutos[coord_key] = []
+            pontos_brutos[coord_key].append(z)
 
-            if id_poco not in pocos:
-                pocos[id_poco] = []
-            pocos[id_poco].append((x, y, z))
+    pontos_x = []
+    pontos_y = []
+    pontos_z = []
+    
+    for (x, y), zs in pontos_brutos.items():
+        pontos_x.append(x)
+        pontos_y.append(y)
+        pontos_z.append(sum(zs) / len(zs))
 
-    colecao_principal = bpy.data.collections.new("Modelo_Estratigrafico")
+    min_x, max_x = min(pontos_x), max(pontos_x)
+    min_y, max_y = min(pontos_y), max(pontos_y)
+    min_z, max_z = min(pontos_z), max(pontos_z)
+
+    x_norm = [(x - min_x) / (max_x - min_x) for x in pontos_x]
+    y_norm = [(y - min_y) / (max_y - min_y) for y in pontos_y]
+    z_norm = [(z - min_z) / (max_z - min_z) for z in pontos_z]
+
+    rbf = Rbf(x_norm, y_norm, z_norm, function='thin_plate', smooth=0.01)
+
+    centro_x = (min_x + max_x) / 2.0
+    centro_y = (min_y + max_y) / 2.0
+    escala_xy = 0.001
+    escala_z = escala_xy * exagero_vertical
+
+    colecao_principal = bpy.data.collections.new('modelo')
     bpy.context.scene.collection.children.link(colecao_principal)
 
-    colecao_formacoes = bpy.data.collections.new("Superficies_Interpoladas")
-    colecao_principal.children.link(colecao_formacoes)
-
-    res = 20
-
-    for nome_formacao, dados in formacoes.items():
-        x_dados = np.array(dados['x']) - min_x
-        y_dados = np.array(dados['y']) - min_y
-        z_dados = np.array(dados['z'])
-
-        grid_x, grid_y = np.meshgrid(
-            np.linspace(np.min(x_dados), np.max(x_dados), res),
-            np.linspace(np.min(y_dados), np.max(y_dados), res)
-        )
-
-        rbf = Rbf(x_dados, y_dados, z_dados, function='linear')
-        grid_z = rbf(grid_x, grid_y)
-
-        mesh = bpy.data.meshes.new(nome_formacao)
-        obj = bpy.data.objects.new(nome_formacao, mesh)
-        colecao_formacoes.objects.link(obj)
-
-        bm = bmesh.new()
-
-        for i in range(res):
-            for j in range(res):
-                bm.verts.new((grid_x[i, j], grid_y[i, j], grid_z[i, j]))
-
-        bm.verts.ensure_lookup_table()
-
-        for i in range(res - 1):
-            for j in range(res - 1):
-                bm.faces.new((
-                    bm.verts[i * res + j],
-                    bm.verts[i * res + (j + 1)],
-                    bm.verts[(i + 1) * res + (j + 1)],
-                    bm.verts[(i + 1) * res + j]
-                ))
-
-        bm.to_mesh(mesh)
-        bm.free()
-
-    colecao_pocos = bpy.data.collections.new("Tracos_Pocos")
+    colecao_pocos = bpy.data.collections.new('pocos')
     colecao_principal.children.link(colecao_pocos)
 
-    for id_poco, coordenadas in pocos.items():
+    for pt in pocos:
+        x, y, z, id_poco, prof = pt
+        xn = (x - centro_x) * escala_xy
+        yn = (y - centro_y) * escala_xy
+        zn = z * escala_z
+        pn = prof * escala_z
+        
         curva = bpy.data.curves.new(id_poco, type='CURVE')
         curva.dimensions = '3D'
-        curva.bevel_depth = 2
+        curva.bevel_depth = 10 * escala_xy
         curva.bevel_resolution = 4
 
         spline = curva.splines.new('POLY')
-        spline.points.add(len(coordenadas) - 1)
-
-        coordenadas.sort(key=lambda item: item[2], reverse=True)
-        for i, c in enumerate(coordenadas):
-            spline.points[i].co = (c[0] - min_x, c[1] - min_y, c[2], 1)
+        spline.points.add(1)
+        spline.points[0].co = (xn, yn, zn, 1)
+        spline.points[1].co = (xn, yn, zn - pn, 1)
 
         objeto_curva = bpy.data.objects.new(id_poco, curva)
         colecao_pocos.objects.link(objeto_curva)
+
+    res = 50
+    grid_x_norm = np.linspace(0, 1, res)
+    grid_y_norm = np.linspace(0, 1, res)
+    
+    vertices = []
+    for gy_n in grid_y_norm:
+        gy_real = gy_n * (max_y - min_y) + min_y
+        yn_blender = (gy_real - centro_y) * escala_xy
+        
+        for gx_n in grid_x_norm:
+            gx_real = gx_n * (max_x - min_x) + min_x
+            xn_blender = (gx_real - centro_x) * escala_xy
+            
+            gz_n = float(rbf(gx_n, gy_n))
+            gz_real = gz_n * (max_z - min_z) + min_z
+            zn_blender = gz_real * escala_z
+            
+            vertices.append((xn_blender, yn_blender, zn_blender))
+
+    faces = []
+    for i in range(res - 1):
+        for j in range(res - 1):
+            v1 = i * res + j
+            v2 = v1 + 1
+            v3 = v1 + res + 1
+            v4 = v1 + res
+            faces.append((v1, v2, v3, v4))
+
+    malha_superficie = bpy.data.meshes.new('malha_superficie')
+    malha_superficie.from_pydata(vertices, [], faces)
+    malha_superficie.update()
+
+    objeto_superficie = bpy.data.objects.new('obj_superficie', malha_superficie)
+    colecao_superficie = bpy.data.collections.new('superficies')
+    colecao_principal.children.link(colecao_superficie)
+    colecao_superficie.objects.link(objeto_superficie)
 
     for area in bpy.context.screen.areas:
         if area.type == 'VIEW_3D':
             for space in area.spaces:
                 if space.type == 'VIEW_3D':
-                    space.clip_end = 500000.0
+                    space.clip_end = 100000.0
 
-processar_modelo_geologico("./caminho/para/dados.csv")
+# exemplo de uso para um CSV seguindo as especificações técnicas
+# processar_modelo_geologico('data/example/modelo_poco.csv')
