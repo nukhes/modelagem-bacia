@@ -54,3 +54,5 @@ Com o arquivo `data/processed/20260503_pocos_parana.csv` temos todas as informa�
 ### Educação
 PARA FAZER: preciso consultar o Dr. Celso para entender melhor essa parte.
 
+# Acknowledgements
+- [Fontes dos dados brutos](data/FONTES.md)
