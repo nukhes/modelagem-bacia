@@ -1,3 +1,5 @@
+![Banner com a logo da Unicamp e do Institut de Geociências](assets/banner.png)
+
 # Modelos geológicos 3D na pesquisa educacional em Geociências
 O Grupo de Pesquisa 3D Bacias, vinculado ao IG-Unicamp, com apoio do Centro de Tecnologia de Informação Renato Archer (CTI) vem desenvolvendo modelos gerados por impressoras 3D, cuja utilização didática é pesquisada por vários projetos em paralelo. O campo da modelagem tridimensional tem interesse direto a vários campos do conhecimento, básicos e aplicados, mas ainda são escassas as publicações na área de Geociências em Português sobre o tema. O projeto retomará o modelo 3D da Bacia do Paraná, gerado por manufatura aditiva, e aplicá-lo na pesquisa educacional.
 
