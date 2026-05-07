@@ -2,9 +2,19 @@
 O Grupo de Pesquisa 3D Bacias, vinculado ao IG-Unicamp, com apoio do Centro de Tecnologia de Informação Renato Archer (CTI) vem desenvolvendo modelos gerados por impressoras 3D, cuja utilização didática é pesquisada por vários projetos em paralelo. O campo da modelagem tridimensional tem interesse direto a vários campos do conhecimento, básicos e aplicados, mas ainda são escassas as publicações na área de Geociências em Português sobre o tema. O projeto retomará o modelo 3D da Bacia do Paraná, gerado por manufatura aditiva, e aplicá-lo na pesquisa educacional.
 
 # Configurando ambiente
-Para configurar o ambiente clone este repositório em seu computador, é necessário ter o Git LFS instalado.
+Para configurar o ambiente clone este repositório em seu computador (é necessário ter o Git LFS instalado para versionar alguns dados brutos), após isso instale os requesitos para o Python, note que isso não anula a necessidade de instalar as bibliotecas dentro do blender na próxima etapa.
 ```
 git clone https://github.com/nukhes/modelagem-bacia
+
+# Criando o ambiente virtual
+python -m venv .venv
+
+# Windows
+.venv\Scripts\activate
+
+# Linux
+source .venv/bin/activate
+
 pip install -r requirements.txt
 ```
 
@@ -29,18 +39,17 @@ pip install numpy scipy --target="<PASTA_MODULES>"
 ```
 
 # Especificações e arquitetura técnica
-
-## Preparação
-Os arquivos já processados estão versionado no repositório, tornando esta etapa opcional, mas caso queira rodar o fluxo de processamento em seu computador insira o comando abaixo no seu terminal.
+Os arquivos já processados estão versionado no repositório, tornando esta etapa opcional, mas caso queira rodar o fluxo de processamento para a bacia do Paraná em seu computador, insira o comando abaixo no seu terminal.
 
 ```bash
 python scripts/bacia_parana/main.py 
 ```
 
-Confira os requesitos e especificações para o arquivo de modelagem em 'data/example/modelo_poco.csv'.
+> [!NOTE]
+> Confira os requesitos e especificações para o arquivo de modelagem em `data/example/modelo_poco.csv`.
 
 ### Modelagem
-Com o arquivo 'data/processed/20260503_pocos_parana.csv' temos todas as informações para modelar a bacia no Blender usando a aba "Scripting" do programa, basta carregar o script de modelagem em `./scripts/blender_model.py` e ajustar o caminho do modelo.
+Com o arquivo `data/processed/20260503_pocos_parana.csv` temos todas as informações para modelar a bacia do Paraná no Blender, na aba "Scripting" do programa, basta carregar o script de modelagem em `scripts/blender_model.py` e ajustar o caminho para os dados, o script pode ser usado para modelar virtualmente qualquer planilha de dados que siga as especificações da etapa anterior.
 
 ### Educação
 PARA FAZER: preciso consultar o Dr. Celso para entender melhor essa parte.
