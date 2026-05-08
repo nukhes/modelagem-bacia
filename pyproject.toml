@@ -10,6 +10,7 @@ dependencies = [
     "pandas>=3.0.2",
     "pip>=26.1.1",
     "pyproj>=3.7.2",
+    "pysonar>=1.5.0.4793",
     "rasterio>=1.5.0",
     "requests>=2.33.1",
 ]
