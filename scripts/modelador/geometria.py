@@ -6,6 +6,7 @@ def obter_grid_interpolado(pontos_x, pontos_y, valores_z, dx, dy, min_x, min_y, 
     Interpolação RBF com anisotropia e suavização.
     """
     z_vals = np.asarray(valores_z, dtype=float)
+    pts = np.column_stack((pontos_x, pontos_y)).astype(float)
 
     if np.isnan(z_vals).all() or z_vals.size == 0:
         raise ValueError('valores de z são inválidos')
@@ -13,11 +14,8 @@ def obter_grid_interpolado(pontos_x, pontos_y, valores_z, dx, dy, min_x, min_y, 
     if dx <= 0 or dy <= 0:
         raise ValueError('dx e dy devem ser positivos para gerar o grid.')
     
-    pts = np.column_stack((pontos_x, pontos_y)).astype(float)
-    
     if pts.shape[0] != z_vals.shape[0]:
         raise ValueError('O número de pontos não corresponde ao número de valores z.')
-
     
     # se temos menos de 3 valores não podemos montar um plano, então retornamos
     # um grid constante com a média dos valores disponíveis, futuramente

@@ -86,7 +86,3 @@ def criar_solido_camada(nome, z_top, z_bot, centro_x, centro_y, dx, dy, min_x,
         poly.use_smooth = True
 
     colecao.objects.link(obj)
-
-
-
-
