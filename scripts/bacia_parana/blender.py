@@ -1,16 +1,50 @@
 import sys
-import importlib
+import bpy
+from pathlib import Path
 
-"""
-Rode este script dentro do Blender em um projeto em branco.
-"""
+# CAMINHOS ESSENCIAIS
+REPO_ROOT = Path('/home/user/src/modelagem-bacia')
+SCRIPTS_PATH = REPO_ROOT / 'scripts' / 'modelador'
+DATA_PATH = REPO_ROOT / 'data' / 'processed'
 
-CAMINHO_REPOSITORIO = '/home/pedrohenrique/src/modelagem-bacia'
-NOME_DATASET='20260503_pocos_parana.csv'
+if str(SCRIPTS_PATH) not in sys.path:
+    sys.path.insert(0, str(SCRIPTS_PATH))
 
-sys.path.append(f'{CAMINHO_REPOSITORIO}/scripts')
+import main as modelador
 
-import modelador
-importlib.reload(modelador)
+PYTHON_VERSION = f"{sys.version_info.major}.{sys.version_info.minor}"
+SYSTEM_PACKAGES = Path(f"/usr/lib/python3/dist-packages") 
 
-modelador.processar_modelo_impressao(f'{CAMINHO_REPOSITORIO}/data/processed/{NOME_DATASET}', True, 100)
+if SYSTEM_PACKAGES.exists() and str(SYSTEM_PACKAGES) not in sys.path:
+    sys.path.append(str(SYSTEM_PACKAGES))
+
+def run():
+    """
+    Executa a pipeline de modelagem.
+    """
+    dataset_path = DATA_PATH / '20260503_pocos_parana.csv'
+    
+    # Parâmetros de Geoprocessamento
+    config = {
+        "input_file": str(dataset_path),
+        "yolo": False,
+        "exagero_vertical": 100,
+        "resolucao_grid": 500,
+        "angulo_graus": 45,
+        "razao_anisotropia": 2.0,
+        "suavizacao": 0.05
+    }
+
+    print(f"\n[INFO] Iniciando modelagem: {dataset_path.name}")
+    
+    try:
+        modelador.main(**config)
+        print("[SUCESSO] Malha gerada. Salvando arquivo...")
+        bpy.ops.wm.save_as_mainfile(filepath=str(REPO_ROOT / 'data' / 'processed' / f'{dataset_path.stem}.blend'))
+        
+    except Exception as e:
+        print(f"[ERRO] Falha na execução: {e}")
+        sys.exit(1)
+
+if __name__ == '__main__':
+    run()
