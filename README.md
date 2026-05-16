@@ -8,6 +8,8 @@ Para configurar o ambiente clone este repositório em seu computador (é necess�
 ```
 git clone https://github.com/nukhes/modelagem-bacia
 
+cd modelagem-bacia
+
 # Criando o ambiente virtual
 python -m venv .venv
 
