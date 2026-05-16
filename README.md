@@ -13,14 +13,16 @@ cd modelagem-bacia
 # Criando o ambiente virtual
 python -m venv .venv
 
-# Windows
+# Entrar no ambiente pelo Windows
 .venv\Scripts\activate
 
-# Linux
+# Ou Linux
 source .venv/bin/activate
 
 pip install -r requirements.txt
 ```
+> [!NOTE]
+> Ambientes virtuais do Python promovem o isolamento dos pacotes em relação o sistema, sendo uma boa prática mas pode ser dispensada.
 
 ## Instalando pacotes pip no Blender
 O script para modelar as informações no Blender usa os módulos "scipy" e "numpy", para instalar estes em máquinas rodando Ubuntu Linux basta rodar o comando abaixo no terminal
@@ -53,7 +55,9 @@ python scripts/bacia_parana/main.py
 > Confira os requesitos e especificações para o arquivo de modelagem em `data/example/modelo_poco.csv`.
 
 ### Modelagem
-Com o arquivo `data/processed/20260503_pocos_parana.csv` temos todas as informações para modelar a bacia do Paraná no Blender, na aba "Scripting" do programa, basta carregar o script de modelagem em `scripts/blender_model.py` e ajustar o caminho para os dados, o script pode ser usado para modelar virtualmente qualquer planilha de dados que siga as especificações da etapa anterior.
+Com o arquivo `data/processed/20260503_pocos_parana.csv` temos todas as informações para modelar a bacia do Paraná no Blender, na aba "Scripting" do programa, basta carregar o script de modelagem em `scripts/bacia_parana/blender.py` e ajustar o caminho para os dados, o script pode ser usado para modelar virtualmente qualquer planilha de dados que siga as especificações da etapa anterior desde que seja alimentado com a base de dados correta.
+
+[Mais informações sobre o processo de modelagem](scripts/modelador/README.md)
 
 ### Educação
 PARA FAZER: preciso consultar o Dr. Celso para entender melhor essa parte.
