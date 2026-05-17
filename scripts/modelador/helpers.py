@@ -1,20 +1,11 @@
-'''
-helpers.py contém métodos que não fazem parte da lógica principal
-'''
-
-
-def str2float(valor):
-    '''
-    Converte um valor para float, aceitando vírgula decimal no formato BR.
-    '''
-    if valor is None:
+def str2float(value):
+    """Converte string para float tratando exceções e valores vazios."""
+    if value is None:
         return None
-
-    texto = str(valor).strip()
-    if texto == '':
-        return None
-
     try:
-        return float(texto.replace(',', '.'))
+        val_clean = str(value).strip().replace(",", ".")
+        if val_clean == "" or val_clean.lower() in ["none", "null", "nan"]:
+            return None
+        return float(val_clean)
     except ValueError:
         return None
