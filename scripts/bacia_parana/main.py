@@ -10,6 +10,7 @@ subprocess.run(["python", "scripts/bacia_parana/01_extrair_pocos.py"], check=Tru
 subprocess.run(
     ["python", "scripts/bacia_parana/02_cruzar_altitude_pocos.py"], check=True
 )
+subprocess.run(["python", "scripts/bacia_parana/03_integrar_cprm"], check=True)
 print(
-    "fluxo de processamento concluído com sucesso, arquivo final em 'data/processed/20260503_pocos_parana.csv'."
+    "fluxo de processamento concluído com sucesso, arquivo final em 'data/processed/20260503_pocos_parana_final.csv'."
 )

@@ -1,0 +1,43 @@
+INFORMAÇÕES DO PRODUTO 
+
+Projeto: Geologia e Potencial Mineral da Bacia do Paraná
+
+Arquivos vetoriais (shp) do Mapa geológico da bacia do Paraná
+Escala 1:1.000.000,
+Sistema de Coordenadas Geográficas, Datum SIRGAS - 2000. (EPSG - 4674)
+Data da Publicação:14/12/2022
+Data da Atualização:20/07/2023
+
+
+1 - Informações sobre a Litologia
+
+a) Os atributos contidos na Litologia foram extraídos do GEOSGB em 06/12/2022.
+
+Base Geológica: O mapa geológico da Bacia do Paraná foi elaborado a partir da compilação de: (i) Mapa Geológico do Estado do Rio Grande do Sul-1:750.000(2008); (ii) Mapa Geológico do Estado de Santa Catarina-1:500.000 (2014); (iii) Mapa Geológico do Estado do Paraná (2021); (iv) Mapa Geológico do Estado de São Paulo-1:750.000 (2006); (v) Mapa Geológico do Estado do Mato Grosso-1:1.000.000 (2004); (vi) Mapa Geológico do Estado do Mato Grosso do Sul-1:1.000.000 (2006); (vii) Mapa Geológico do Estado de Minas Gerais-1:1.000.000 (2003); (viii) Mapa Geológico do Estado de Goiás e Distrito Federal (2008)-1:500.000. As modificações foram realizadas de acordo com os dados de campo coletados durante o projeto. Contribuíram para a cartografia do Grupo Serra Geral os seguintes trabalhos: Barreto et al. 2014; Besser 2017; Besser et al. 2018; Licht 2018; Moraes et al.2020; Polo e Janasi 2014; Riccomini et al. 2016; Rossetti et al. 2018; Rossetti et al. 2021; Simões 2018; Simões et al. 2018.
+
+b) Os arquivos de estilo *Sld (OGC® Styled Layer Descriptor), *QML (QGIS - Open Source Geographic Information System - Versão do QGIS - 3.16.9-Hannover) e *lyr/lyrx (ESRI© - LayerFile - ArcGis - Versão 10.1 e ArcGIS Pro 2.8), da camada de Litoestratigrafia, estão localizados na pasta Litologia.
+
+OBS: As cores das unidades litológicas podem apresentar divergências em áreas limites quando associadas a outras folhas vizinhas de períodos, projetos e/ou temas diferentes, pois elas representam as cores extraídas dos seus respectivos mapas.
+
+O Serviço Geológico do Brasil - CPRM, dispõem de uma biblioteca com simbologias integradas das unidades litológicas do Brasil, onde as cores são definidas a partir da ordem de chegada dos mapas, assumindo a cor do mapa mais antigo.
+
+Para fazer o download das bibliotecas clique em: https://geosgb.cprm.gov.br/geosgb/simbologia.html
+
+
+2 - Informações sobre os Afloramentos
+
+a) Os  atributos para os afloramentos foram extraídos da base "Aflora" do GEOSGB em 14/12/2022.
+
+
+3 - Informações sobre Ocorrências Minerais 
+
+a) Os atributos para as Ocorrências Minerais  foram extraídos da base "Recmin" do GEOSGB em 14/12/2022.
+
+
+4 - Base Cartográfica
+
+Base planimétrica de hidrologia e cidades obtida a partir da BASE cartográfica vetorial continua do Brasil ao milionésimo - BCIM. Ver. 3. Rio de Janeiro: IBGE, (2020). Disponível em: <ftp://https://www.ibge.gov.br/geociencias/cartas-e-mapas/bases-cartograficas-continuas.html>.
+Base de malha rodoviária obtida a partir da malha do Departamento Nacional de Infraestrutural e Transportes (DNIT), disponível em — <https://www.gov.br/infraestrutura/pt-br/assuntos/dados-de-transportes/bit/bitmodosmapas#maprodo>. — Modificado — pela equipe da GERINF-PA.
+
+
+Para mais informações: https://rigeo.cprm.gov.br/handle/doc/23037
