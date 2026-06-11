@@ -6,7 +6,6 @@ import pandas as pd
 # ==============================================================================
 # 1. ANCORAGEM DE DIRETÓRIOS E COMPATIBILIDADE SGB (SISTEMA GERENCIAL BLENDER)
 # ==============================================================================
-# Define o caminho raiz absoluto baseado no ambiente do usuário
 REPO_PATH = Path("/home/user/src/modelagem-bacia")
 
 modelador_path = REPO_PATH / "scripts" / "modelador"
@@ -125,7 +124,7 @@ if __name__ == "__main__":
         "repo_path": str(REPO_PATH),
         "input_file": "20260503_pocos_parana_blender_ready.csv",
         "yolo": True,
-        "exagero_vertical": 25,  # Exagero ideal para compensar a escala regional da bacia
+        "exagero_vertical": 25,
         "resolucao_grid": 250,  # Resolução matemática da malha de interpolação
         "angulo_graus": 45,  # Alinhamento estrutural NW-SE predominante na bacia
         "razao_anisotropia": 2.0,
