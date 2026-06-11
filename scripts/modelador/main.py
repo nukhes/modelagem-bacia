@@ -65,7 +65,6 @@ def run(
 
     grupos = defaultdict(list)
     for p in pocos:
-        # CORREÇÃO 2: Restaurando o comportamento YOLO no filtro inicial
         if (p["tem_profundidade"] or yolo) and p["formacao"] != "DESCONHECIDA":
             grupos[p["formacao"]].append(p)
 
@@ -186,7 +185,7 @@ def main(config=None):
         # gerando o caminho de saída com timestamp para evitar sobrescrita
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         output_path = (
-            repo_path / "data" / "models" / f"{Path(input_file).stem}_{timestamp}.blend"
+            repo_path / "data" / f"{Path(input_file).stem}_{timestamp}.blend"
         )
 
         bpy.ops.wm.save_as_mainfile(filepath=str(output_path))
